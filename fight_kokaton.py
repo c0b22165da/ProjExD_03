@@ -117,7 +117,7 @@ class Bomb:
     爆弾に関するクラス
     """
     colors=[(255,0,0),(0,255,0),(0,0,255)]
-    directions=[-5,5]
+    directions=[(-5,5),(5,5),(-5,-5)]
     def __init__(self):
         """
         引数に基づき爆弾円Surfaceを生成する
