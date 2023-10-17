@@ -1,7 +1,7 @@
 import random
 import sys
 import time
-
+import math
 import pygame as pg
 
 
@@ -27,6 +27,7 @@ class Bird:
     """
     ゲームキャラクター（こうかとん）に関するクラス
     """
+
     delta = {  # 押下キーと移動量の辞書
         pg.K_UP: (0, -5),
         pg.K_DOWN: (0, +5),
@@ -35,6 +36,7 @@ class Bird:
     }
 
     def __init__(self, num: int, xy: tuple[int, int]):
+        self.dire=(+5,0)
         """
         こうかとん画像Surfaceを生成する
         引数1 num：こうかとん画像ファイル名の番号
@@ -89,6 +91,7 @@ class Bird:
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self.img = self.imgs[tuple(sum_mv)]
+            self.dire=tuple(sum_mv)
         screen.blit(self.img, self.rct)
 
 class Beam:
@@ -97,11 +100,13 @@ class Beam:
         ビーム画像Surfaceを生成する
         インスタンス作成
         """
-        self.img = pg.image.load(f"ex03/fig/beam.png")
+        self.vx, self.vy = bird.dire
+        self.img = pg.transform.rotozoom(pg.image.load(f"ex03/fig/beam.png"),math.degrees(math.atan2(-self.vy,self.vx)),1)
         self.rct = self.img.get_rect()
-        self.rct.centery = bird.rct.centery
+        self.rct.centery = bird.rct.centery + bird.rct.height * (self.vy / 5)
+        self.rct.centerx= bird.rct.centerx + bird.rct.width * (self.vx / 5)
         self.rct.left=bird.rct.right
-        self.vx, self.vy = +5, 0
+
 
     def update(self,screen:pg.Surface):
         self.rct.move_ip(self.vx, self.vy)
@@ -142,6 +147,20 @@ class Bomb:
             self.vy *= -1
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
+
+class Explosion:
+    def __init__(self,bomb:Bomb):
+        img =pg.image.load(f"ex03/fig/explosion")
+        self.imgs = [  # 0度から反時計回りに定義
+            img,  # 右
+            pg.transform.rotozoom(img, 90, 1.0),  # 上
+            img,  # 左
+            pg.transform.rotozoom(img, -90, 1.0),  # 下
+        ]
+        self.rct.center=(0,0)
+        self.life=5
+
+
 
 
 
