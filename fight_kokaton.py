@@ -11,7 +11,7 @@ NUM_OF_BOMBS=5
 
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
-    オブジェクトが画面内or画面外を判定し，真理値タプルを返す関数
+    オブジェクトが画面内or画面外を判定し，真理値タプルを返す関数.
     引数：こうかとん，または，爆弾SurfaceのRect
     戻り値：横方向，縦方向のはみ出し判定結果（画面内：True／画面外：False）
     """
