@@ -105,7 +105,7 @@ class Beam:
         self.rct = self.img.get_rect()
         self.rct.centery = bird.rct.centery + bird.rct.height * (self.vy / 5)
         self.rct.centerx= bird.rct.centerx + bird.rct.width * (self.vx / 5)
-        self.rct.left=bird.rct.right
+        
 
 
     def update(self,screen:pg.Surface):
